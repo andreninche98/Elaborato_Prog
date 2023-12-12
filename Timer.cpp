@@ -4,7 +4,13 @@
 
 #include "Timer.h"
 
+Timer::Timer() {}
+
 void Timer::start() {
+    start_time = QDateTime::currentDateTime();
+}
+
+void Timer::update() {
     start_time = QDateTime::currentDateTime();
 }
 

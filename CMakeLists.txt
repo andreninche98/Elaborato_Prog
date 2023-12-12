@@ -15,6 +15,8 @@ add_executable(Elaborato_Prog main.cpp
         Date.h
         Timer.cpp
         Timer.h
+        Clock.cpp
+        Clock.h
 )
 
 

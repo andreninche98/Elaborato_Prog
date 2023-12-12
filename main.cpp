@@ -1,6 +1,7 @@
 #include "Time.h"
 #include "Timer.h"
 #include "Date.h"
+#include "Clock.h"
 #include <QApplication>
 #include <QLabel>
 #include <QPushButton>
@@ -16,10 +17,12 @@ int main(int argc, char *argv[]) {
     auto *layout = new QVBoxLayout(&window);
 
     auto *timeDisplay = new QLabel("00:00:00", &window);
+    auto *clockDisplay = new QLabel("", &window);
     auto *startPauseButton = new QPushButton("Start", &window);
     auto *exitButton = new QPushButton("Exit", &window);
 
     layout->addWidget(timeDisplay);
+    layout->addWidget(clockDisplay);
     layout->addWidget(startPauseButton);
     layout->addWidget(exitButton);
 
@@ -30,10 +33,13 @@ int main(int argc, char *argv[]) {
     myDate.set(1,1,2023);
 
     Timer myTimer;
-
+    Clock clock;
     QTimer timer;
 
     QObject::connect(&timer,&QTimer::timeout,[&](){
+        myTimer.update();
+        clock.update();
+
         if (myTimer.elapsed_seconds() % 2 == 0){
             myTime.seconds++;
             if(myTime.seconds == 60){
@@ -49,6 +55,7 @@ int main(int argc, char *argv[]) {
             }
             timeDisplay->setText(myTime.display());
         }
+        clockDisplay->setText(clock.display());
     });
     QObject::connect(startPauseButton, &QPushButton::clicked, [&](){
         if(timer.isActive()){
