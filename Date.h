@@ -4,8 +4,8 @@
 
 #ifndef ELABORATO_PROG_DATE_H
 #define ELABORATO_PROG_DATE_H
-#include "QObject"
-#include "QString"
+#include <QObject>
+#include <QString>
 
 
 class Date : public QObject {

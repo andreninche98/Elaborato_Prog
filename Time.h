@@ -5,8 +5,8 @@
 #ifndef ELABORATO_PROG_TIME_H
 #define ELABORATO_PROG_TIME_H
 
-#include "QObject"
-#include "QString"
+#include <QObject>
+#include <QString>
 
 
 

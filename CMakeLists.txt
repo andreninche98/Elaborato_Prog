@@ -13,14 +13,15 @@ add_executable(Elaborato_Prog main.cpp
         Time.h
         Date.cpp
         Date.h
-        Timer.cpp
-        Timer.h
+        Chrono.cpp
+        Chrono.h
         Clock.cpp
         Clock.h
+        Timer.cpp
+        Timer.h
 )
 
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-set(ENV{QT_QPA_PLATFORM} "wayland")
 target_link_libraries(Elaborato_Prog PRIVATE Qt5::Widgets)
 

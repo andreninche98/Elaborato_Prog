@@ -1,76 +1,52 @@
-#include "Time.h"
-#include "Timer.h"
+#include "Chrono.h"
 #include "Date.h"
 #include "Clock.h"
+#include "Timer.h"
 #include <QApplication>
-#include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QTimer>
+#include <QRadioButton>
+#include <QDialog>
+#include <QLineEdit>
+#include <QDebug>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+    a.setStyleSheet("QDialog { width: 200px; height: 200px; } QLabel { font-size: 18pt; qproperty-alignment: AlignCenter; }");
 
-    QWidget window;
-    window.setWindowTitle("Timer App");
+    QDialog chooseModeDialog;
+    chooseModeDialog.setWindowTitle("Choose Mode");
+    chooseModeDialog.resize(300,300);
 
-    auto *layout = new QVBoxLayout(&window);
+    QVBoxLayout dialogLayout(&chooseModeDialog);
+    QRadioButton chronoButton("Chrono", &chooseModeDialog);
+    QRadioButton timerButton("Timer", &chooseModeDialog);
+    QRadioButton clockButton("Clock", &chooseModeDialog);
+    QPushButton okButton("OK", &chooseModeDialog);
 
-    auto *timeDisplay = new QLabel("00:00:00", &window);
-    auto *clockDisplay = new QLabel("", &window);
-    auto *startPauseButton = new QPushButton("Start", &window);
-    auto *exitButton = new QPushButton("Exit", &window);
+    dialogLayout.addWidget(&chronoButton);
+    dialogLayout.addWidget(&timerButton);
+    dialogLayout.addWidget(&clockButton);
+    dialogLayout.addWidget(&okButton);
 
-    layout->addWidget(timeDisplay);
-    layout->addWidget(clockDisplay);
-    layout->addWidget(startPauseButton);
-    layout->addWidget(exitButton);
-
-    Time myTime;
-    myTime.set(0,0,0);
-
-    Date myDate;
-    myDate.set(1,1,2023);
-
-    Timer myTimer;
+    Chrono chrono;
+    Timer timer;
     Clock clock;
-    QTimer timer;
 
-    QObject::connect(&timer,&QTimer::timeout,[&](){
-        myTimer.update();
-        clock.update();
-
-        if (myTimer.elapsed_seconds() % 2 == 0){
-            myTime.seconds++;
-            if(myTime.seconds == 60){
-                myTime.seconds = 0;
-                myTime.minutes++;
-                if(myTime.minutes == 60){
-                    myTime.minutes = 0;
-                    myTime.hours++;
-                    if(myTime.hours == 24){
-                        myTime.hours = 0;
-                    }
-                }
-            }
-            timeDisplay->setText(myTime.display());
-        }
-        clockDisplay->setText(clock.display());
-    });
-    QObject::connect(startPauseButton, &QPushButton::clicked, [&](){
-        if(timer.isActive()){
-            timer.stop();
-            startPauseButton->setText("Start");
+    QObject::connect(&okButton, &QPushButton::clicked, [&]() {
+        if (chronoButton.isChecked()) {
+            chrono.start();
         } else {
-            timer.start(1000);
-            myTimer.start();
-            startPauseButton->setText("Pause");
+            if (clockButton.isChecked()) {
+            clock.start();
+        } else {
+            if (timerButton.isChecked()){
+                timer.start();
+            }
+            }
         }
+        chooseModeDialog.accept();
     });
-    QObject::connect(exitButton, &QPushButton::clicked, [&](){
-        a.quit();
-    });
-    window.show();
-
+    chooseModeDialog.exec();
     return a.exec();
 }
