@@ -5,7 +5,7 @@
 #include "Time.h"
 #include "QDebug"
 
-void Time::set(int h, int m, int s) {
+void Time::set(int h, int m, int s) {  //classe che implementa il tempo
     hours = h;
     minutes = m;
     seconds = s;

@@ -10,8 +10,8 @@
 #include <QLineEdit>
 #include <QDebug>
 
-int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
+int main(int argc, char *argv[]) {  //classe main utilizzata per inizializzare finestre di dialogo in cui scegliere tra le te funzionalità
+    QApplication a(argc, argv);     // e quindi far partire una di esse a seconda della scelta
     a.setStyleSheet("QDialog { width: 200px; height: 200px; } QLabel { font-size: 18pt; qproperty-alignment: AlignCenter; }");
 
     QDialog chooseModeDialog;

@@ -4,7 +4,7 @@
 
 #include "Date.h"
 
-void Date::set(int d, int m, int y) {
+void Date::set(int d, int m, int y) {  //classse che rappresenta la data
     day = d;
     month = m;
     year = y;

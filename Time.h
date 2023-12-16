@@ -10,7 +10,7 @@
 
 
 
-class Time : public QObject{
+class Time : public QObject{  //Classe che rappresenta il tempo
     Q_OBJECT
 
 public:

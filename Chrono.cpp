@@ -2,7 +2,7 @@
 // Created by andrea on 05/12/23.
 //
 
-#include "Chrono.h"
+#include "Chrono.h"   //Classe che implementa il cronometro
 #include <QDebug>
 
 Chrono::Chrono(QObject *parent) : QObject(parent), chronoWindow(nullptr), elapsed(0), isRunning(false), isPaused(false){

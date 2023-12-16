@@ -4,7 +4,7 @@
 
 #include "Clock.h"
 
-Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr) {
+Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr) {  //classe che implementa l'orologio
     connect(&timer, &QTimer::timeout, this, &Clock::update);
 }
 

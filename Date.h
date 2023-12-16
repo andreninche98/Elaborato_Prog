@@ -8,7 +8,7 @@
 #include <QString>
 
 
-class Date : public QObject {
+class Date : public QObject {  //classe che rappresenta la data
     Q_OBJECT
 
 public:

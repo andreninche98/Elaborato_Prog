@@ -13,20 +13,21 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-class Clock : public QObject{
+class Clock : public QObject{ //Classe che rappresenta un orologio con data e orario corrente
     Q_OBJECT
 public:
     explicit Clock(QObject *parent = nullptr);
     void start();
-private slots:
+    QLabel *clockDisplay;
     void update();
+private slots:
     void exitClock();
 private:
     QWidget *clockWindow;
     QVBoxLayout *layout;
-    QLabel *clockDisplay;
-    QPushButton* exitButton;
     QTimer timer;
+    QPushButton* exitButton;
+
 };
 
 #endif //ELABORATO_PROG_CLOCK_H

@@ -7,7 +7,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QDebug>
-#include "Timer.h"
+#include "Timer.h"  //Classe che implementa il timer
 
 Timer::Timer(QObject *parent) : QObject(parent), remainingHours(0), remainingMinutes(0), remainingSeconds(0), timerSetupDialog(
         nullptr), timerWindow(nullptr), displayLabel(nullptr){

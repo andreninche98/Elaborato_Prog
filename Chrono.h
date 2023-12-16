@@ -13,7 +13,7 @@
 #include <QWidget>
 #include "Time.h"
 
-class Chrono : public QObject{
+class Chrono : public QObject{  //Classe che rappresenta un cronometro con start, pausa e reset
     Q_OBJECT
 private:
     QWidget* chronoWindow;
@@ -24,19 +24,19 @@ private:
     QLabel* chronoDisplay;
     QTimer chrono;
     Time myTime;
-    QString displayTime;
     QDateTime start_time;
     qint64 elapsed;
-    bool isRunning;
-    bool isPaused;
+
 public:
     explicit Chrono(QObject* parent = nullptr);
     void start();
-private slots:
     void startPauseChrono();
     void resetChrono();
     void update();
     void exitChrono();
+    bool isRunning;
+    bool isPaused;
+    QString displayTime;
 };
 
 
