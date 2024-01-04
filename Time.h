@@ -14,13 +14,17 @@ class Time : public QObject{  //Classe che rappresenta il tempo
     Q_OBJECT
 
 public:
+    Time(QObject *parent, int hours, int minutes, int seconds);
+    void set(int h, int m, int s);
+    QString display() const;
+    int getHours() const;
+    int getMinutes() const;
+    int getSeconds() const;
+    void decreaseSecond();
+private:
     int hours;
     int minutes;
     int seconds;
-
-    void set(int h, int m, int s);
-    QString display() const;
-
 };
 
 

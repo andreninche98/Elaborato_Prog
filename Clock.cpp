@@ -2,9 +2,10 @@
 // Created by andrea on 12/12/23.
 //
 
+#include "QDebug"
 #include "Clock.h"
 
-Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr) {  //classe che implementa l'orologio
+Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr), currentDate(new Date(this,0,0,0)), currentTime(new Time(this,0,0,0)) {  //classe che implementa l'orologio
     connect(&timer, &QTimer::timeout, this, &Clock::update);
 }
 
@@ -31,9 +32,18 @@ void Clock::start() {
 }
 
 void Clock::update() {
-    QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString displayString = currentDateTime.toString("yyyy-MM-dd HH:mm:ss");
-    clockDisplay->setText(displayString);
+    if(currentDate && currentTime) {
+        currentDate->set(QDate::currentDate().year(),QDate::currentDate().month(),QDate::currentDate().day());
+        currentTime->set(QTime::currentTime().hour(),QTime::currentTime().minute(),QTime::currentTime().second());
+
+        if(!currentDate->followsGregorianCalendar()){
+            qDebug() << "La data non segue il calendario gregoriano ";
+            return;
+        }
+
+        QString displayString = currentDate->display() + " " + currentTime->display();
+        clockDisplay->setText(displayString);
+    }
 }
 void Clock::exitClock() {
     clockWindow->close();

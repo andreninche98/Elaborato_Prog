@@ -12,11 +12,12 @@
 
 int main(int argc, char *argv[]) {  //classe main utilizzata per inizializzare finestre di dialogo in cui scegliere tra le te funzionalità
     QApplication a(argc, argv);     // e quindi far partire una di esse a seconda della scelta
-    a.setStyleSheet("QDialog { width: 200px; height: 200px; } QLabel { font-size: 18pt; qproperty-alignment: AlignCenter; }");
+    a.setStyleSheet(
+            "QDialog { width: 200px; height: 200px; } QLabel { font-size: 18pt; qproperty-alignment: AlignCenter; }");
 
     QDialog chooseModeDialog;
     chooseModeDialog.setWindowTitle("Choose Mode");
-    chooseModeDialog.resize(300,300);
+    chooseModeDialog.resize(300, 300);
 
     QVBoxLayout dialogLayout(&chooseModeDialog);
     QRadioButton chronoButton("Chrono", &chooseModeDialog);
@@ -30,8 +31,8 @@ int main(int argc, char *argv[]) {  //classe main utilizzata per inizializzare f
     dialogLayout.addWidget(&okButton);
 
     Chrono chrono;
-    Timer timer;
-    Clock clock;
+    Timer timer(nullptr);
+    Clock clock(nullptr);
 
     QObject::connect(&okButton, &QPushButton::clicked, [&]() {
         if (chronoButton.isChecked()) {
@@ -48,5 +49,5 @@ int main(int argc, char *argv[]) {  //classe main utilizzata per inizializzare f
         chooseModeDialog.accept();
     });
     chooseModeDialog.exec();
-    return a.exec();
+    return QApplication::exec();
 }

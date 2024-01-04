@@ -39,14 +39,14 @@ void Chrono::start() {
 }
 
 void Chrono::startPauseChrono() {
-    if(!isRunning){
+    if(!getIsRunning()){
         start_time = QDateTime::currentDateTime();
         chrono.start(10);
         isRunning = true;
         isPaused = false;
         startPauseButton->setText("Pause");
     } else {
-        if(!isPaused){
+        if(!getIsPaused()){
             elapsed += start_time.msecsTo(QDateTime::currentDateTime());
             chrono.stop();
             isRunning = false;
@@ -90,3 +90,11 @@ void Chrono::update() {
     void Chrono::exitChrono() {
         chronoWindow->close();
     }
+
+bool Chrono::getIsPaused() const{
+    return isPaused;
+}
+
+bool Chrono::getIsRunning() const {
+    return isRunning;
+}

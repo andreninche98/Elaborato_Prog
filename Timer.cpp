@@ -6,52 +6,45 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMessageBox>
 #include <QDebug>
 #include "Timer.h"  //Classe che implementa il timer
 
-Timer::Timer(QObject *parent) : QObject(parent), remainingHours(0), remainingMinutes(0), remainingSeconds(0), timerSetupDialog(
-        nullptr), timerWindow(nullptr), displayLabel(nullptr){
+Timer::Timer(QObject *parent) : QObject(parent), timerSetupDialog(
+        nullptr), timerWindow(nullptr), displayLabel(nullptr), remainingTime(new Time(this,0,0,0)) {
     connect(&timer, &QTimer::timeout, this, &Timer::updateTimer);
 }
+Timer::~Timer() {
+    delete timerWindow;
+}
+
 void Timer::setInitialTime(int hours, int minutes, int seconds) {
-    remainingHours = hours;
-    remainingMinutes = minutes;
-    remainingSeconds = seconds;
-    emit timeUpdated(remainingHours,remainingMinutes,remainingSeconds);
+    remainingTime->set(hours,minutes,seconds);
+    emit timeUpdated(hours,minutes,seconds);
 }
 void Timer::start() {
-    if(!timerSetupDialog){
-        createTimerDialog();
-    }
-    if(timerWindow) {
-        timerWindow->show();
-        timer.start(1000);
+    if(!timerSetupDialog && remainingTime->getHours() == 0 && remainingTime->getMinutes() == 0 && remainingTime->getSeconds() == 0){
+            createTimerDialog();
+        }
+        if(!timerWindow) {
+            createTimerWindow();
+            timer.start(1000);
+        } else {
+            timerWindow->show();
+            timer.start(1000);
     }
 }
 
 void Timer::updateTimer() {
-    if(remainingHours == 0 && remainingMinutes == 0 && remainingSeconds == 0){
+    if(remainingTime->getHours() == 0 && remainingTime->getMinutes() == 0 && remainingTime->getSeconds() == 0){
         timer.stop();
         emit timeout();
         if(timerWindow){
             QTimer::singleShot(1000,timerWindow, &QWidget::close);
         }
     } else {
-        if (remainingSeconds > 0){
-            remainingSeconds--;
-        } else {
-            if(remainingMinutes > 0){
-                remainingMinutes--;
-                remainingSeconds = 59;
-            } else {
-                if(remainingHours > 0){
-                    remainingHours--;
-                    remainingMinutes = 59;
-                    remainingSeconds = 59;
-                }
-            }
-        }
-        emit timeUpdated(remainingHours,remainingMinutes,remainingSeconds);
+        remainingTime->decreaseSecond();
+        emit timeUpdated(remainingTime->getHours(),remainingTime->getMinutes(),remainingTime->getSeconds());
         updateTimerWindow();
     }
 }
@@ -59,13 +52,13 @@ void Timer::createTimerDialog(){
     timerSetupDialog = new QDialog;
     timerSetupDialog->setWindowTitle("Set Countdown Timer");
     timerSetupDialog->resize(300,300);
-    QVBoxLayout* timerSetupLayout = new QVBoxLayout(timerSetupDialog);
+    auto* timerSetupLayout = new QVBoxLayout(timerSetupDialog);
 
-    QLabel* label = new QLabel("Set Initial Time (HH:MM:SS)", timerSetupDialog);
-    QLineEdit* timeInput = new QLineEdit(timerSetupDialog);
+    auto* label = new QLabel("Set Initial Time (HH:MM:SS)", timerSetupDialog);
+    auto* timeInput = new QLineEdit(timerSetupDialog);
 
-    QPushButton* startButton = new QPushButton("Start", timerSetupDialog);
-    QPushButton* cancelButton = new QPushButton("Cancel", timerSetupDialog);
+    auto* startButton = new QPushButton("Start", timerSetupDialog);
+    auto* cancelButton = new QPushButton("Cancel", timerSetupDialog);
 
     timerSetupLayout->addWidget(label);
     timerSetupLayout->addWidget(timeInput);
@@ -86,6 +79,8 @@ void Timer::createTimerDialog(){
             });
             timer.start();
             timerSetupDialog->accept();
+        } else {
+            QMessageBox::critical(timerSetupDialog, "Error!", "Invalid time format! Please use HH:MM:SS");
         }
     });
     QObject::connect(cancelButton, &QPushButton::clicked, [this](){
@@ -99,8 +94,8 @@ void Timer::createTimerWindow() {
         timerWindow->setWindowTitle("Timer App");
         timerWindow->resize(300,300);
 
-        QVBoxLayout* timerWindowLayout = new QVBoxLayout(timerWindow);
-        QLabel* timerLabel = new QLabel("Time Remaining:", timerWindow);
+        auto* timerWindowLayout = new QVBoxLayout(timerWindow);
+        auto* timerLabel = new QLabel("Time Remaining:", timerWindow);
         displayLabel = new QLabel("", timerWindow);
 
         timerWindowLayout->addWidget(timerLabel);
@@ -128,14 +123,29 @@ void Timer::createTimerWindow() {
     }
 }
 void Timer::updateTimerWindow() {
-    if(timerWindow){
-        QString timeString = QString("%1:%2:%3")
-                .arg(remainingHours, 2, 10, QChar('0'))
-                .arg(remainingMinutes, 2, 10, QChar('0'))
-                .arg(remainingSeconds, 2, 10, QChar('0'));
-        QLabel* label = timerWindow->findChild<QLabel*>("displayLabel");
-        if(label){
-            label->setText(timeString);
+    if(timerWindow ) {
+        if (displayLabel) {
+            QString timeString = QString("%1:%2:%3")
+                    .arg(remainingTime->getHours(), 2, 10, QChar('0'))
+                    .arg(remainingTime->getMinutes(), 2, 10, QChar('0'))
+                    .arg(remainingTime->getSeconds(), 2, 10, QChar('0'));
+            displayLabel->setText(timeString);
         }
     }
 }
+
+Time *Timer::getRemainingTime() const {
+    return remainingTime;
+}
+
+QString Timer::getDisplayLabelText() {
+    if(displayLabel) {
+        QString labelText = displayLabel->text();
+        return labelText;
+    } else {
+        return QString();
+    }
+}
+
+
+

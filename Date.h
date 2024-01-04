@@ -12,14 +12,22 @@ class Date : public QObject {  //classe che rappresenta la data
     Q_OBJECT
 
 public:
+    Date(QObject *parent, int year, int month, int day);
+
+    void set (int y, int m, int d);
+    QString display() const;
+    int getDay() const;
+    int getMonth() const;
+    int getYear() const;
+    bool followsGregorianCalendar() const;
+
+private:
     int day;
     int month;
     int year;
 
-    void set (int d, int m, int y);
-    QString display() const;
-
 };
+
 
 
 #endif //ELABORATO_PROG_DATE_H

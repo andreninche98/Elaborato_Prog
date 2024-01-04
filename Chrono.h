@@ -23,9 +23,11 @@ private:
     QPushButton* exitButton;
     QLabel* chronoDisplay;
     QTimer chrono;
-    Time myTime;
+    Time *myTime;
     QDateTime start_time;
     qint64 elapsed;
+    bool isRunning;
+    bool isPaused;
 
 public:
     explicit Chrono(QObject* parent = nullptr);
@@ -34,10 +36,11 @@ public:
     void resetChrono();
     void update();
     void exitChrono();
-    bool isRunning;
-    bool isPaused;
+    bool getIsRunning() const;
+    bool getIsPaused() const;
     QString displayTime;
 };
+
 
 
 #endif //ELABORATO_PROG_CHRONO_H

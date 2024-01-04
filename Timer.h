@@ -9,35 +9,32 @@
 #include "QLabel"
 #include "QObject"
 #include "QTimer"
+#include "Time.h"
 
 
 class Timer : public QObject { //Classe che rappresenta un timer con impostazione del conto alla rovescia
     Q_OBJECT                   // e messaggio di timeout alla fine di esso
 public:
-    explicit Timer(QObject *parent = nullptr);
-
+    explicit Timer(QObject *parent);
+    virtual ~Timer() override;
     void setInitialTime(int hours, int minutes, int seconds);
     void start();
-    void updateTimer();
     virtual void createTimerDialog();
-    int remainingHours;
-    int remainingMinutes;
-    int remainingSeconds;
-    QLabel* displayLabel;
-    QWidget* timerWindow;
-    signals:
+    Time *getRemainingTime() const;
+    QString getDisplayLabelText();
+    void updateTimer();
+signals:
     void timeUpdated(int hours, int minutes, int seconds);
     void timeout();
-private slots:
-    void createTimerWindow();
-    void updateTimerWindow();
-
-
+protected:
+    virtual void createTimerWindow();
+    virtual void updateTimerWindow();
 private:
     QTimer timer;
     QDialog* timerSetupDialog;
-
+    QLabel* displayLabel;
+    QWidget* timerWindow;
+    Time *remainingTime;
 };
-
 
 #endif //ELABORATO_PROG_TIMER_H
