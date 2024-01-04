@@ -19,13 +19,13 @@ public:
     int getDay() const;
     int getMonth() const;
     int getYear() const;
-    bool followsGregorianCalendar() const;
 
 private:
     int day;
     int month;
     int year;
-
+    bool followsGregorianCalendar() const;
+    int daysInMonth(int year, int month);
 };
 
 

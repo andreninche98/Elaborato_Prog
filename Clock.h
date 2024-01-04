@@ -21,14 +21,16 @@ public:
     explicit Clock(QObject *parent = nullptr);
     void start();
     void update();
-    QLabel *clockDisplay;
+    QLabel *getClockDisplay() const;
+
 private slots:
+
     void exitClock();
 private:
     QWidget *clockWindow;
     QVBoxLayout *layout;
     QTimer timer;
-
+    QLabel *clockDisplay;
     QPushButton* exitButton;
     Date *currentDate;
     Time *currentTime;

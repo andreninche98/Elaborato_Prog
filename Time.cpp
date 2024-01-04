@@ -5,8 +5,17 @@
 #include "Time.h"
 #include "QDebug"  //classe che implementa il tempo
 
-Time::Time(QObject *parent, int hours, int minutes, int seconds) : QObject(parent), hours(hours), minutes(minutes),
-                                                                   seconds(seconds) {}
+Time::Time(QObject *parent, int hours, int minutes, int seconds) : QObject(parent) {
+    if(hours >= 0 && hours < 24){
+        if(minutes >= 0 && minutes < 60 ){
+            if(seconds >= 0 && seconds < 60){
+                this->hours = hours;
+                this->minutes = minutes;
+                this->seconds = seconds;
+            }
+        }
+    }
+}
 
 void Time::set(int h, int m, int s) {
     hours = h;

@@ -13,9 +13,10 @@ TEST(ClockTest, Update){ //Test per vedere se la data corrente è giusta e sel'o
 
     QThread::sleep(2);
     clock.update();
-    QString displayText = clock.clockDisplay->text();
+    QString displayText = clock.getClockDisplay()->text();
     ASSERT_FALSE(displayText.isEmpty());
     EXPECT_TRUE(displayText.contains(QString::number(currentDate.year())));
     EXPECT_TRUE(displayText.contains(QString::number(currentDate.month())));
     EXPECT_TRUE(displayText.contains(QString::number(currentDate.day())));
+
 }

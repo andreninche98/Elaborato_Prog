@@ -36,15 +36,14 @@ void Clock::update() {
         currentDate->set(QDate::currentDate().year(),QDate::currentDate().month(),QDate::currentDate().day());
         currentTime->set(QTime::currentTime().hour(),QTime::currentTime().minute(),QTime::currentTime().second());
 
-        if(!currentDate->followsGregorianCalendar()){
-            qDebug() << "La data non segue il calendario gregoriano ";
-            return;
-        }
-
         QString displayString = currentDate->display() + " " + currentTime->display();
         clockDisplay->setText(displayString);
     }
 }
 void Clock::exitClock() {
     clockWindow->close();
+}
+
+QLabel *Clock::getClockDisplay() const {
+    return clockDisplay;
 }
