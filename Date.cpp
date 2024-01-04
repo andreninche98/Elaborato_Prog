@@ -1,20 +1,34 @@
 //
 // Created by andrea on 05/12/23.
 //
-
+#include "QDebug"
 #include "Date.h"   //classe che rappresenta la data
 
 Date::Date(QObject *parent, int year, int month, int day) : QObject(parent) {
+    qDebug() << "Year:" << year << "Month:" << month << "Day:" << day;
     if(year >= 0 && year <= 9999){
         if(month >= 1 && month <= 12){
-            if(day >= 1 && day <= daysInMonth(year,month)){
+            int maxDaysInMonth = daysInMonth(year,month);
+            if(day >= 1 && day <= maxDaysInMonth){
                 if(followsGregorianCalendar()) {
                     this->year = year;
                     this->month = month;
                     this->day = day;
                 }
+            } else {
+                this->year = 0;
+                this->month = 0;
+                this->day = 0;
             }
+        } else {
+            this->year = 0;
+            this->month = 0;
+            this->day = 0;
         }
+    } else {
+        this->year = 0;
+        this->month = 0;
+        this->day = 0;
     }
 }
 
@@ -54,12 +68,12 @@ bool Date::followsGregorianCalendar() const {
 }
 
 int Date::daysInMonth(int year, int month) {
-    if( year && month){
+    if( year > 0 && month >= 1 && month <= 12){
         int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31,30,31 ,30,31};
         if((year % 4 == 0 && year %100 != 0) || (year % 400 == 0)){
             daysInMonth[1] = 29;
         }
-        return daysInMonth[month];
+        return daysInMonth[month - 1];
     } else {
         return -1;
     }
