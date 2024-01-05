@@ -5,7 +5,9 @@
 #include "QDebug"
 #include "Clock.h"
 
-Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr), currentDate(new Date(this,0,0,0)), currentTime(new Time(this,0,0,0)) {  //classe che implementa l'orologio
+Clock::Clock(QObject*parent) : QObject(parent), clockWindow(nullptr) {  //classe che implementa l'orologio
+    currentDate = new Date(this,1,1,1);  //inizializzata a 1/1/1 per superare i controlli su Date
+    currentTime = new Time(this,0,0,0);
     connect(&timer, &QTimer::timeout, this, &Clock::update);
 }
 

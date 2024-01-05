@@ -12,8 +12,14 @@ Time::Time(QObject *parent, int hours, int minutes, int seconds) : QObject(paren
                 this->hours = hours;
                 this->minutes = minutes;
                 this->seconds = seconds;
+            } else {
+                throw std::invalid_argument("Secondi non validi");
             }
+        } else {
+            throw std::invalid_argument("Minuti non validi");
         }
+    } else {
+        throw std::invalid_argument("Ore non valide");
     }
 }
 

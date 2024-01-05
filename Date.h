@@ -13,7 +13,6 @@ class Date : public QObject {  //classe che rappresenta la data
 
 public:
     Date(QObject *parent, int year, int month, int day);
-
     void set (int y, int m, int d);
     QString display() const;
     int getDay() const;

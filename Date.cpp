@@ -16,19 +16,13 @@ Date::Date(QObject *parent, int year, int month, int day) : QObject(parent) {
                     this->day = day;
                 }
             } else {
-                this->year = 0;
-                this->month = 0;
-                this->day = 0;
+                throw std::invalid_argument("Giorno non valido");
             }
         } else {
-            this->year = 0;
-            this->month = 0;
-            this->day = 0;
+            throw std::invalid_argument("Mese non valido");
         }
     } else {
-        this->year = 0;
-        this->month = 0;
-        this->day = 0;
+        throw std::invalid_argument("Anno non valido");
     }
 }
 
@@ -54,6 +48,7 @@ int Date::getMonth() const {
 int Date::getYear() const {
     return year;
 }
+
 bool Date::followsGregorianCalendar() const {
     if(year > 1582){
         return true;
@@ -69,11 +64,11 @@ bool Date::followsGregorianCalendar() const {
 
 int Date::daysInMonth(int year, int month) {
     if( year > 0 && month >= 1 && month <= 12){
-        int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31,30,31 ,30,31};
-        if((year % 4 == 0 && year %100 != 0) || (year % 400 == 0)){
-            daysInMonth[1] = 29;
+        int daysInMonth[] = {0,31, 28, 31, 30, 31, 30, 31, 31,30,31 ,30,31};
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)){
+            daysInMonth[2] = 29;
         }
-        return daysInMonth[month - 1];
+            return daysInMonth[month];
     } else {
         return -1;
     }

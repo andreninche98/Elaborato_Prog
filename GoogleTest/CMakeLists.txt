@@ -8,7 +8,8 @@ set(SOURCE_FILES AllTests.cpp
         ClockTest.cpp
         TimerTest.cpp
         ChronoTest.cpp
-        DateTest.cpp)
+        DateTest.cpp
+        TimeTest.cpp)
 add_executable(Google_Tests_run ${SOURCE_FILES})
 target_link_libraries(Google_Tests_run gtest gtest_main gmock core)
 

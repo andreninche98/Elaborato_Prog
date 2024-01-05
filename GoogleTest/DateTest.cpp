@@ -5,33 +5,59 @@
 #include "../Date.h"
 
 TEST(DateTest, PossibleDate){
-    Date date(nullptr, 2023, 10, 20);
+    Date Pdate(nullptr, 2023, 10, 20);
 
-    EXPECT_EQ(date.getYear(),2023);
-    EXPECT_EQ(date.getMonth(),10);
-    EXPECT_EQ(date.getDay(),20);
-}
-
-TEST(DateTest, ImpossibleYear){
-    Date date(nullptr,-2023,9,20);
-
-    EXPECT_EQ(date.getYear(),0);
-    EXPECT_EQ(date.getMonth(),0);
-    EXPECT_EQ(date.getDay(),0);
+    EXPECT_EQ(Pdate.getYear(),2023);
+    EXPECT_EQ(Pdate.getMonth(),10);
+    EXPECT_EQ(Pdate.getDay(),20);
 }
 
 TEST(DateTest, ImpossibleMonth){
-    Date date(nullptr,2023,13,20);
-
-    EXPECT_EQ(date.getYear(),0);
-    EXPECT_EQ(date.getMonth(),0);
-    EXPECT_EQ(date.getDay(),0);
+    EXPECT_THROW({
+        try {
+            Date date(nullptr,2023,14,20);
+        } catch (const std::invalid_argument& e){
+            EXPECT_STREQ(e.what(),"Mese non valido");
+            throw ;
+        }
+    }, std::invalid_argument);
 }
 
-TEST(DateTest, ImpossibleDay){
-    Date date(nullptr,2023,11,40);
+TEST(DateTest, ImpossibleDay) {
+    EXPECT_THROW({
+        try {
+            Date date(nullptr, 2023, 11, 40);
+        } catch (const std::invalid_argument &e) {
+            EXPECT_STREQ(e.what(), "Giorno non valido");
+            throw;
+        }
+        }, std::invalid_argument);
+}
 
-    EXPECT_EQ(date.getYear(),0);
-    EXPECT_EQ(date.getMonth(),0);
-    EXPECT_EQ(date.getDay(),0);
+TEST(DateTest, ImpossibleYear){
+    EXPECT_THROW({
+        try {
+            Date date(nullptr, -2023, 11, 10);
+        } catch (const std::invalid_argument &e) {
+            EXPECT_STREQ(e.what(), "Anno non valido");
+            throw;
+        }
+        }, std::invalid_argument);
+}
+
+TEST(DateTest, LeapYear){
+    EXPECT_THROW({
+        try{
+            Date date(nullptr,2022,2,29);
+        } catch (const std::invalid_argument &e){
+            EXPECT_STREQ(e.what(), "Giorno non valido");
+            throw ;
+        }
+    }, std::invalid_argument);
+
+    Date date2(nullptr,2020,2,29);
+
+    EXPECT_EQ(date2.getYear(),2020);
+    EXPECT_EQ(date2.getMonth(),2);
+    EXPECT_EQ(date2.getDay(),29);
 }
